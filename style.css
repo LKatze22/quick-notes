@@ -17,6 +17,8 @@ body {
   margin: 2rem;
   background: var(--base-color);
   color: var(--text-color);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 button {
   border: none;
@@ -26,7 +28,6 @@ button {
 button:hover {
   transition: all 0.4s ease-in-out;
   transform: scale(1.1);
-  
 }
 .top-bar {
   display: flex;
@@ -90,7 +91,7 @@ header {
   background: var(--surface-color);
   color: var(--text-color);
   cursor: pointer;
-  
+
   flex: 1 1 auto;
 }
 .linkBtn a {
@@ -109,8 +110,6 @@ header {
   flex: 1 1 auto;
 }
 
-
-
 .notes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -122,18 +121,16 @@ header {
   border-radius: 0.75rem;
   padding: 1.5rem;
   border: 1px solid var(--surface-color);
-  
+
   position: relative;
   opacity: 0;
-  translate: -50%;;
+  translate: -50%;
   transition: 600ms ease;
 }
 .note-card.show {
   opacity: 1;
   translate: 0;
 }
-
-
 
 .note-title {
   font-size: 1.25rem;
