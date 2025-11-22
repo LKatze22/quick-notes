@@ -1,24 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quick Notes</title>
-  
-  <link rel="stylesheet" href="index.css">
-  <script src="index.js" defer></script>
-  <link rel="icon" type="x-icon" href="x-icon.png">
-  <meta name="theme-color" content="#1e1f26">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
-
 <body>
 
   <header>
-    <div class="top-bar">
-      <div class="brand">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="56" height="56">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80">
   <!-- Hintergrund mit Farbverlauf wie beim Todo-Icon -->
   <defs>
     <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -43,38 +35,12 @@
         fill="white"
         transform="translate(20,13) scale(0.35) rotate(80)"/>
 </svg>
-
-      </div>
-
-      <nav aria-label="Main Navigation">
-        <button class="menu-toggle" aria-label="Open menu">☰</button>
-        <ul class="nav-links">
-          <li><a href="index.html">Notes</a></li>
-          <li><a href="../Programming/index.html">Programming</a></li>
-          <li><a href="../portfolio/index.html">Portfolio</a></li>
-          <li><a href="../To-do list/index.html">To‑Do</a></li>
-        </ul>
-        <div class="mobile-menu" role="dialog" aria-hidden="true">
-          <button class="close-btn" aria-label="Close menu">✕</button>
-          <ul>
-            <li><a href="index.html">Notes</a></li>
-            <li><a href="../Programming/index.html">Programming</a></li>
-            <li><a href="../portfolio/index.html">Portfolio</a></li>
-            <li><a href="../To-do list/index.html">To‑Do</a></li>
-          </ul>
-          <button class="theme-toggle" title="Toggle theme">🌙</button>
-        </div>
-      </nav>
-
-      <div class="top-actions">
-        <button id="themeToggle" class="theme-toggle" title="Toggle theme">🌙</button>
-        <button class="add-note-btn" onclick="openNoteDialog()">+ Add Note</button>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-      </div>
+    <h1> Quick Notes</h1>
+    <div>
+      <button class="add-note-btn" onclick="openNoteDialog()">+ Add Note</button>
+      <button id="themeToggleBtn" class="theme-toggle-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/></svg></button>
     </div>
   </header>
-
-
 
   <main id="notesContainer" class="notes-grid">
 
@@ -92,7 +58,7 @@
           <label for="noteTitle" class="form-label">Title</label>
           <input type="text" id="noteTitle" class="form-input" placeholder="Enter note title..." required>
         </div>
-
+        
         <div class="form-group">
           <label for="noteContent" class="form-label">Content</label>
           <textarea id="noteContent" class="form-textarea" placeholder="Write your note here..." required></textarea>
@@ -106,5 +72,4 @@
     </div>
   </dialog>
 </body>
-
 </html>
