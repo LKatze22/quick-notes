@@ -166,3 +166,10 @@ function deleteNote(id) {
       saveNotes();
       renderNotes();
     }
+
+    // Close dialog with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeNoteDialog();
+      }
+    });
