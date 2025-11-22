@@ -14,12 +14,12 @@ function saveNote(event) {
 
   if (editingNoteId) {
     // Update existing Note
-
     const noteIndex = notes.findIndex((note) => note.id === editingNoteId);
     notes[noteIndex] = {
       ...notes[noteIndex],
       title: title,
       content: content,
+      timestamp: Date.now(), // ✅ Timestamp beim Bearbeiten aktualisieren
     };
   } else {
     // Add New Note
@@ -27,6 +27,7 @@ function saveNote(event) {
       id: generateId(),
       title: title,
       content: content,
+      timestamp: Date.now(), // ✅ Timestamp beim Erstellen hinzufügen
     });
   }
 
@@ -71,18 +72,22 @@ function renderNotes() {
       <h3 class="note-title">${note.title}</h3>
       <p class="note-content">${note.content}</p>
       <div class="note-actions">
-        <button class="edit-btn" onclick="openNoteDialog('${note.id}')" title="Edit Note">
+        <button class="edit-btn" onclick="openNoteDialog('${
+          note.id
+        }')" title="Edit Note">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
           </svg>
         </button>
-        <button class="delete-btn" onclick="deleteNote('${note.id}')" title="Delete Note">
+        <button class="delete-btn" onclick="deleteNote('${
+          note.id
+        }')" title="Delete Note">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.88c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/>
           </svg>
         </button>
       </div>
-
+      <div class="note-timestamp">${formatDate(note.timestamp)}</div>
     </div>
     `
     )
@@ -160,16 +165,38 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function deleteNote(id) {
-      if (!confirm('Are you sure you want to delete this note?')) return;
-      
-      notes = notes.filter(n => n.id !== id);
-      saveNotes();
-      renderNotes();
-    }
+  if (!confirm("Are you sure you want to delete this note?")) return;
 
-    // Close dialog with Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeNoteDialog();
-      }
-    });
+  notes = notes.filter((n) => n.id !== id);
+  saveNotes();
+  renderNotes();
+}
+
+// Close dialog with Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeNoteDialog();
+  }
+});
+
+function formatDate(timestamp) {
+  if (!timestamp) return "No date"; // Fallback für fehlende timestamps
+  
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+  if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
