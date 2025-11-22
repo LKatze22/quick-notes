@@ -1,0 +1,135 @@
+/* Quick Notes Navigation Bar Styles (matching To-do list) */
+
+nav {
+  width: 100%;
+  background: var(--base-color, #1e1f26);
+  color: var(--text-color, #f0f0f0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  border-radius: 0.5em;
+  margin-bottom: 1em;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  list-style: none;
+  margin: 0;
+  padding: 0.8em 0;
+}
+
+.nav-links li a {
+  color: var(--text-color, #f0f0f0);
+  text-decoration: none;
+  font-size: 1.1em;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links li a:hover {
+  color: #f7b32b;
+  text-decoration: underline;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-color, #f0f0f0);
+  font-size: 2em;
+  cursor: pointer;
+  position: absolute;
+  right: 1em;
+  top: 0.7em;
+  z-index: 110;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--base-color, #1e1f26);
+  color: var(--text-color, #f0f0f0);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  transition: transform 0.3s ease;
+  transform: translateY(-100%);
+}
+
+.mobile-menu.open {
+  display: flex;
+  transform: translateY(0);
+}
+
+.mobile-menu .close-btn {
+  position: absolute;
+  top: 1.2em;
+  right: 1.5em;
+  background: none;
+  border: none;
+  color: var(--text-color, #f0f0f0);
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 2em 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: center;
+}
+
+.mobile-menu li a {
+  color: var(--text-color, #f0f0f0);
+  text-decoration: none;
+  font-size: 1.3em;
+  font-weight: 500;
+}
+
+.mobile-menu li a:hover {
+  color: #f7b32b;
+}
+
+.theme-toggle {
+  margin-top: 2em;
+  background: var(--surface-color, #2c2f38);
+  color: var(--text-color, #f0f0f0);
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.7em 1.5em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.theme-toggle:hover {
+  background: #f7b32b;
+  color: #1e1f26;
+}
+
+@media screen and (max-width: 700px) {
+  .nav-links {
+    display: none;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .mobile-menu {
+    font-size: 1.1em;
+  }
+}

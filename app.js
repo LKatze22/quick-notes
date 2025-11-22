@@ -153,29 +153,67 @@ document.addEventListener("DOMContentLoaded", function () {
         closeNoteDialog();
       }
     });
+  // --- Navigation toggle (mobile) ---
+  const navToggle = document.getElementById("navToggle");
+  if (navToggle) {
+    const mobileMenu = document.getElementById("mobileMenu");
+    // ensure initial aria-hidden state
+    if (mobileMenu) mobileMenu.setAttribute("aria-hidden", "true");
+
+    navToggle.addEventListener("click", function () {
+      const expanded = this.getAttribute("aria-expanded") === "true";
+      const willOpen = !expanded;
+      this.setAttribute("aria-expanded", String(willOpen));
+      // explicitly add/remove class
+      document.body.classList.toggle("nav-open", willOpen);
+      if (mobileMenu) mobileMenu.setAttribute("aria-hidden", String(!willOpen));
+    });
+  }
+
+  // --- Theme toggle (desktop + mobile) ---
+  // bind all buttons with the .theme-toggle class so desktop and mobile toggles stay in sync
+  const themeToggles = Array.from(document.querySelectorAll('.theme-toggle'));
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+      themeToggles.forEach(t => t.textContent = '☀️');
+      // update meta theme-color for light mode
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#ffffff');
+    } else {
+      document.body.classList.remove('light-theme');
+      themeToggles.forEach(t => t.textContent = '🌙');
+      // update meta theme-color for dark mode
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#1e1f26');
+    }
+    try {
+      localStorage.setItem('quickNotesTheme', theme);
+    } catch (e) {
+      // ignore storage errors
+    }
+  }
+
+  // initialize theme from localStorage
+  try {
+    const savedTheme = localStorage.getItem('quickNotesTheme');
+    applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+  } catch (e) {
+    applyTheme('dark');
+  }
+
+  // attach listeners to all theme toggles
+  themeToggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isLight = document.body.classList.contains('light-theme');
+      applyTheme(isLight ? 'dark' : 'light');
+      // if mobile menu is open, keep it open; don't forcibly close
+    });
+  });
+
 });
 
-function setColor(input) {
-  const lightness = getLightnessFromHex(input.value);
-  const textColor = lightness > 60 ? "black" : "white";
-  document.body.setAttribute(
-    "style",
-    `
-    --base-color: ${input.value};
-    --text-color: ${textColor};
-  `
-  );
-}
-function getLightnessFromHex(hex) {
-  hex = hex.replace(/^#/, "");
-  const r = parseInt(hex.substr(0, 2), 16);
-  const g = parseInt(hex.substr(2, 2), 16);
-  const b = parseInt(hex.substr(4, 2), 16);
-
-  const brightness = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-
-  return +(brightness * 100).toFixed(2); // Return lightness as a number between 0 and 100
-}
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
