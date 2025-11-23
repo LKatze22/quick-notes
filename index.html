@@ -437,39 +437,46 @@
       margin-bottom: 2rem;
     }
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 768px) {
       body {
         padding: 0.6em;
       }
       
       .hamburger {
-        display: flex;
+        display: flex !important;
       }
 
       .nav-menu {
         display: none;
         flex-direction: column;
-        width: 100%;
+        width: calc(100% - 2em);
         position: absolute;
-        top: 100%;
-        left: 0;
-        background: var(--base-color);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        top: calc(100% + 0.5em);
+        left: 1em;
+        right: 1em;
+        background: var(--surface-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         border-radius: 0.5em;
-        margin-top: 0.5em;
         padding: 1em;
         z-index: 1000;
+        gap: 0.8em;
       }
 
       .nav-menu.active {
-        display: flex;
+        display: flex !important;
       }
       
       .top-bar {
-        padding: 0.5em;
+        padding: 0.8em 1em;
         position: relative;
         flex-wrap: nowrap;
         justify-content: space-between;
+        align-items: center;
+      }
+
+      .top-bar > svg {
+        width: 60px;
+        height: 60px;
       }
       
       .notes-grid {
@@ -483,13 +490,23 @@
 
       .linkBtn, .add-note-btn, .theme-toggle-btn, .dashboard {
         width: 100%;
+        margin: 0;
+      }
+
+      .dashboard {
+        flex-direction: row;
+        gap: 0.5em;
+      }
+
+      .dashboard .stat {
+        margin: 0;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation Bar-->
+  <!-- Navigation Bar from Todo Project -->
   <div class="top-bar">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80">
       <defs>
@@ -728,8 +745,8 @@
     }
 
     function updateDashboard() {
-      document.getElementById("total-count").textContent = notes.length;
-      document.getElementById("notes-count").textContent = notes.length;
+      const notesCountEl = document.getElementById("notes-count");
+      if (notesCountEl) notesCountEl.textContent = notes.length;
     }
 
     function escapeHtml(text) {
