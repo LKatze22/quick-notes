@@ -1,3 +1,8 @@
+function sanitizeHTML(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
 let notes = [];
 let editingNoteId = null;
 
@@ -9,17 +14,28 @@ function loadNotes() {
 function saveNote(event) {
   event.preventDefault();
 
-  const title = document.getElementById("noteTitle").value.trim();
-  const content = document.getElementById("noteContent").value.trim();
+  const title = sanitizeHTML(document.getElementById("noteTitle").value.trim());
+  const content = sanitizeHTML(
+    document.getElementById("noteContent").value.trim()
+  );
 
+  if (!title || !content) {
+    alert("Bitte alle Felder ausfüllen");
+    return;
+  }
+
+  if (title.length > 100) {
+    alert("Titel zu lang (max 100 Zeichen)");
+    return;
+  }
   if (editingNoteId) {
     // Update existing Note
+
     const noteIndex = notes.findIndex((note) => note.id === editingNoteId);
     notes[noteIndex] = {
       ...notes[noteIndex],
       title: title,
       content: content,
-      timestamp: Date.now(), // ✅ Timestamp beim Bearbeiten aktualisieren
     };
   } else {
     // Add New Note
@@ -27,7 +43,6 @@ function saveNote(event) {
       id: generateId(),
       title: title,
       content: content,
-      timestamp: Date.now(), // ✅ Timestamp beim Erstellen hinzufügen
     });
   }
 
@@ -69,8 +84,8 @@ function renderNotes() {
     .map(
       (note) => `
     <div class="note-card">
-      <h3 class="note-title">${note.title}</h3>
-      <p class="note-content">${note.content}</p>
+      <h3 class="note-title">${sanitizeHTML(note.title)}</h3>
+      <p class="note-content">${sanitizeHTML(note.content)}</p>
       <div class="note-actions">
         <button class="edit-btn" onclick="openNoteDialog('${
           note.id
@@ -87,11 +102,13 @@ function renderNotes() {
           </svg>
         </button>
       </div>
-      <div class="note-timestamp">${formatDate(note.timestamp)}</div>
+
     </div>
     `
     )
     .join("");
+  const hiddenElements = document.querySelectorAll(".note-card");
+  hiddenElements.forEach((el) => observer.observe(el));
 }
 
 function openNoteDialog(noteId = null) {
@@ -122,38 +139,12 @@ function closeNoteDialog() {
   document.getElementById("noteDialog").close();
 }
 
-const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-  <path fill="#fff" d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
-</svg>`;
-const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/></svg>`;
-
-function toggleTheme() {
-  const isDark = document.body.classList.toggle("dark-theme");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-  document.getElementById("themeToggleBtn").innerHTML = isDark
-    ? sunSVG
-    : moonSVG;
-}
-
-function applyStoredTheme() {
-  const btn = document.getElementById("themeToggleBtn");
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-theme");
-    btn.innerHTML = sunSVG;
-  } else {
-    btn.innerHTML = moonSVG;
-  }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-  applyStoredTheme();
   notes = loadNotes();
   renderNotes();
 
   document.getElementById("noteForm").addEventListener("submit", saveNote);
-  document
-    .getElementById("themeToggleBtn")
-    .addEventListener("click", toggleTheme);
+  document;
 
   document
     .getElementById("noteDialog")
@@ -162,41 +153,76 @@ document.addEventListener("DOMContentLoaded", function () {
         closeNoteDialog();
       }
     });
-});
+  // --- Navigation toggle (mobile) ---
+  const navToggle = document.getElementById("navToggle");
+  if (navToggle) {
+    const mobileMenu = document.getElementById("mobileMenu");
+    // ensure initial aria-hidden state
+    if (mobileMenu) mobileMenu.setAttribute("aria-hidden", "true");
 
-function deleteNote(id) {
-  if (!confirm("Are you sure you want to delete this note?")) return;
-
-  notes = notes.filter((n) => n.id !== id);
-  saveNotes();
-  renderNotes();
-}
-
-// Close dialog with Escape key
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeNoteDialog();
+    navToggle.addEventListener("click", function () {
+      const expanded = this.getAttribute("aria-expanded") === "true";
+      const willOpen = !expanded;
+      this.setAttribute("aria-expanded", String(willOpen));
+      // explicitly add/remove class
+      document.body.classList.toggle("nav-open", willOpen);
+      if (mobileMenu) mobileMenu.setAttribute("aria-hidden", String(!willOpen));
+    });
   }
+
+  // --- Theme toggle (desktop + mobile) ---
+  // bind all buttons with the .theme-toggle class so desktop and mobile toggles stay in sync
+  const themeToggles = Array.from(document.querySelectorAll('.theme-toggle'));
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+      themeToggles.forEach(t => t.textContent = '☀️');
+      // update meta theme-color for light mode
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#ffffff');
+    } else {
+      document.body.classList.remove('light-theme');
+      themeToggles.forEach(t => t.textContent = '🌙');
+      // update meta theme-color for dark mode
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#1e1f26');
+    }
+    try {
+      localStorage.setItem('quickNotesTheme', theme);
+    } catch (e) {
+      // ignore storage errors
+    }
+  }
+
+  // initialize theme from localStorage
+  try {
+    const savedTheme = localStorage.getItem('quickNotesTheme');
+    applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+  } catch (e) {
+    applyTheme('dark');
+  }
+
+  // attach listeners to all theme toggles
+  themeToggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isLight = document.body.classList.contains('light-theme');
+      applyTheme(isLight ? 'dark' : 'light');
+      // if mobile menu is open, keep it open; don't forcibly close
+    });
+  });
+
 });
 
-function formatDate(timestamp) {
-  if (!timestamp) return "No date"; // Fallback für fehlende timestamps
-  
-  const date = new Date(timestamp);
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMins < 1) return "Just now";
-  if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
-  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-  if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    } else {
+      entry.target.classList.remove("show");
+    }
   });
-}
+});
+const hiddenElements = document.querySelectorAll(".note-card");
+hiddenElements.forEach((el) => observer.observe(el));

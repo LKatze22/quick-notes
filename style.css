@@ -6,31 +6,146 @@
   box-sizing: border-box;
 }
 
-:root {
-  --brand-color: #2e9cc7;
-  --base-color: #f2f4f8;
-  --surface-color: #fff;
-  --text-color: #191b23;
-  --secondary-text-color: #3c404f;
-  --base-transparent-90: rgba(247, 247, 247, 0.9);
-  --base-transparent-100: rgba(247, 247, 247, 1);
-}
-
-.dark-theme {
-  --brand-color: #2ec7bf;
-  --base-color: #1e1f26;
-  --surface-color: #2c2f38;
-  --text-color: #f0f0f0;
-  --secondary-text-color: #b0b3c0;
-  --base-transparent-90: rgba(30, 31, 38, 0.9);
-  --base-transparent-100: rgba(30, 31, 38, 1);
-}
-
 body {
+  --brand-color: oklch(from var(--base-color) calc(l * 3) calc(c * 5) h);
+  --base-color: #1e1f26;
+  --surface-color: oklch(from var(--base-color) calc(l * 1.2) c h);
+  --surface-border: rgba(255,255,255,0.06);
+  --card-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  --card-shadow-hover: 0 26px 60px rgba(0,0,0,0.45);
+  --text-color: #f0f0f0;
+  --secondary-text-color: oklch(from var(--text-color) l c h / 0.6);
+
   font-family: Poppins, sans-serif;
   margin: 2rem;
   background: var(--base-color);
   color: var(--text-color);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+button {
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  transition: all 0.4s ease-in-out;
+  transform: scale(1.1);
+}
+.top-bar {
+  display: flex;
+  
+  justify-content: center;
+  gap: 1em;
+  padding: 0.5em 0.5em;
+  background: var(--brand-color);
+  border-radius: 0.5em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1em;
+}
+/* color input removed */
+
+/* Nav and theme variables */
+body {
+  --base-transparent-90: rgba(30, 31, 38, 0.9);
+  --base-transparent-100: rgba(30, 31, 38, 1);
+}
+
+/* Light theme overrides */
+.light-theme {
+  /* upgraded light theme for stronger contrast and pleasant accents */
+  --base-color: #ffffff;                 /* page background */
+  --surface-color: #c0c0c0;              /* cards / surfaces */
+  --text-color: #0b1220;                 /* primary text (dark) */
+  --secondary-text-color: rgba(11, 18, 32, 0.6);
+  --brand-color: #2563eb;                /* stronger blue accent */
+  --base-transparent-90: rgba(255, 255, 255, 0.9);
+  --base-transparent-100: rgba(255, 255, 255, 1);
+
+  /* tweak button/surface borders in light mode */
+  --surface-border: rgba(11, 18, 32, 0.06);
+  --card-shadow: 0 12px 28px rgba(11,18,32,0.10);
+  --card-shadow-hover: 0 22px 46px rgba(11,18,32,0.14);
+}
+
+/* Navigation styles */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.main-nav {
+  flex: 1 1 auto;
+}
+
+/* Mobile-only menu container (holds theme toggle) */
+.mobile-menu {
+  display: none;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Theme toggle: show on desktop (top bar) and remain available in mobile if you choose to add it later) */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--surface-color);
+  color: var(--text-color);
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--surface-border, transparent);
+}
+
+.top-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.theme-toggle {
+  background: var(--surface-color);
+  color: var(--text-color);
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--surface-color);
+}
+
+.nav-toggle {
+  display: none;
+  background: var(--surface-color);
+  color: var(--text-color);
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.375rem;
+}
+
+/* Mobile behavior */
+@media (max-width: 720px) {
+  .nav-toggle { display: inline-flex; }
+  /* Show mobile menu when nav-open */
+  body.nav-open .mobile-menu {
+    display: flex;
+    position: absolute;
+    top: 88px;
+    left: 8px;
+    right: 8px;
+    background: var(--surface-color);
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    z-index: 40;
+  }
+  /* Show theme toggle inside the mobile menu */
+  body.nav-open .mobile-menu .theme-toggle,
+  .mobile-menu .theme-toggle {
+    display: inline-flex;
+  }
 }
 
 h1 a {
@@ -54,37 +169,31 @@ header {
   align-items: center;
   margin-bottom: 2rem;
 }
+.linkBtn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1em;
+  border: none;
+  border-radius: 0.3em;
+  background: var(--surface-color);
+  color: var(--text-color);
+  cursor: pointer;
 
+  flex: 1 1 auto;
+}
+.linkBtn a {
+  color: var(--text-color);
+  text-decoration: none;
+}
 .add-note-btn {
-  background: var(--brand-color);
-  color: white;
+  background: var(--surface-color);
+  color: var(--text-color);
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s ease;
-}
-
-.add-note-btn:hover {
-  background: #2e8fc7;
-}
-
-.theme-toggle-btn {
-  background: var(--surface-color);
-  color: var(--text-color);
-  border: 1px solid var(--surface-color);
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  margin-left: 1rem;
-}
-
-.theme-toggle-btn:hover {
-  background: var(--brand-color);
-  color: white;
+  flex: 1 1 auto;
 }
 
 .notes-grid {
@@ -92,26 +201,27 @@ header {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
 }
-.note-timestamp {
-  margin-top: 1em;
-  padding-top: 1em;
-  border-top: 1px solid var(--base-color);
-  font-size: 0.85em;
-  color: var(--secondary-text-color);
-}
 
 .note-card {
   background: var(--surface-color);
   border-radius: 0.75rem;
   padding: 1.5rem;
-  border: 1px solid var(--surface-color);
-  transition: all 0.2s ease;
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--card-shadow);
+
   position: relative;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 360ms cubic-bezier(.2,.9,.2,1);
+}
+.note-card.show {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
 }
 
 .note-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .note-title {
@@ -301,4 +411,10 @@ dialog::backdrop {
 .empty-state p {
   font-size: 1rem;
   margin-bottom: 2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .note-card {
+    transition: none;
+  }
 }
