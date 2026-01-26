@@ -6,7 +6,7 @@ A simple, not overcomplicated quick-notes program with pleasant styling.
 
 - [About](#about)
 - [Features](#features)
-- [Demo / Screenshot](#demo--screenshot)
+- [Screenshot](#screenshot)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -22,11 +22,9 @@ Quick Notes is a minimal, browser-first note-taking app focused on simplicity an
 - Clean, responsive styling
 - Works as a static web app (no backend required)
 
-## Demo / Screenshot
+## Screenshot
 
-Replace the placeholder below with a screenshot of the app. Add your image to the repository (for example `assets/screenshot.png`) and update the path if needed.
-
-![Screenshot placeholder](assets/screenshot.png)
+![Screenshot placeholder](screenshot.png)
 
 ## Installation
 
@@ -55,4 +53,3 @@ Add a license file to clarify the project's licensing. If you don't have one yet
 
 ---
 
-*This README was updated to improve formatting and provide a screenshot placeholder.*
