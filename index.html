@@ -159,9 +159,8 @@
     .dashboard {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--base-color);
+      padding: 0;
+      background: none;
       border-radius: 0.5rem;
       font-size: 0.9rem;
     }
@@ -170,93 +169,40 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      color: var(--text-color);
+      background: #23272F;
+      color: #fff;
+      border-radius: 12px;
+      padding: 0.4rem 1.2rem 0.4rem 0.8rem;
+      font-size: 1rem;
+      min-width: 90px;
+      box-shadow: none;
     }
 
     .dashboard .stat svg {
       width: 20px;
       height: 20px;
-      fill: var(--brand-color);
+      fill: #fff;
+      flex-shrink: 0;
     }
 
     .dashboard .count {
       font-weight: 600;
+      font-size: 1.1rem;
+      margin: 0 0.2rem 0 0.2rem;
+      color: #fff;
+    }
+
+    .dashboard .stat small {
+      color: #fff;
       font-size: 1rem;
+      margin-left: 0.2rem;
+      margin-right: 0;
+      letter-spacing: 0.01em;
+      font-weight: 400;
+      white-space: nowrap;
     }
 
-    .dashboard small {
-      color: var(--secondary-text-color);
-      font-size: 0.85rem;
-    }
 
-    /* Mobile Responsive */
-    @media screen and (max-width: 768px) {
-      body {
-        padding-top: 80px;
-      }
-
-      .top-bar {
-        padding: 0 1rem;
-        height: 60px;
-      }
-
-      .navbar-left {
-        gap: 0.75rem;
-      }
-
-      .navbar-right {
-        gap: 0.5rem;
-      }
-
-      .logo-container svg {
-        width: 32px;
-        height: 32px;
-      }
-
-      .app-title {
-        display: none;
-      }
-
-      .add-note-btn {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.85rem;
-      }
-
-      .add-note-btn span {
-        display: none;
-      }
-
-      .theme-toggle-btn {
-        width: 36px;
-        height: 36px;
-      }
-
-      .dashboard {
-        padding: 0.4rem 0.75rem;
-        font-size: 0.8rem;
-        margin-right: 0.75rem !important;
-      }
-
-      .dashboard .stat svg {
-        width: 18px;
-        margin-right: 0.25rem;
-        height: 18px;
-      }
-
-      .dashboard .count {
-        font-size: 0.9rem;
-      }
-
-      .dashboard small {
-        font-size: 0.75rem;
-      }
-    }
-
-    @media screen and (min-width: 769px) {
-      .app-title {
-        display: block;
-      }
-    }
 
     .notes-grid {
       display: grid;
@@ -315,12 +261,6 @@
       transition: all 0.2s ease;
     }
 
-    @media (max-width: 768px) {
-      .note-actions {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
 
     .note-card:hover .note-actions {
       opacity: 1;
@@ -489,6 +429,15 @@
         padding: 0.6em;
       }
 
+      .app-title {
+        display: block;
+      }
+
+      .note-actions {
+        opacity: 1;
+        visibility: visible;
+      }
+
       .hamburger {
         display: flex !important;
       }
@@ -516,8 +465,6 @@
       .top-bar {
         padding: 0.8em 1em;
         position: relative;
-
-
       }
 
       .top-bar>svg {
@@ -534,18 +481,16 @@
         padding: 2rem 1rem;
       }
 
-      .linkBtn,
-      .add-note-btn,
-      .theme-toggle-btn,
-      .dashboard {
-        width: 100%;
-        max-width: 5rem;
-        margin: 0;
-      }
-
       .dashboard {
         flex-direction: row;
         gap: 0.5em;
+        margin-right: 0.5rem;
+        width: auto;
+        max-width: none;
+      }
+
+      .add-note-btn {
+        margin-left: 0;
       }
 
       .dashboard .stat {
