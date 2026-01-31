@@ -7,6 +7,7 @@
   <title>Quick Notes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="shortcut icon" type="x-icon" href="x-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
     rel="stylesheet" />
   <style>
@@ -307,6 +308,13 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.2s ease;
+    }
+
+    @media (max-width: 768px) {
+      .note-actions {
+        opacity: 1;
+        visibility: visible;
+      }
     }
 
     .note-card:hover .note-actions {
