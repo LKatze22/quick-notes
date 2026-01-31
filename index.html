@@ -424,78 +424,82 @@
       margin-bottom: 2rem;
     }
 
-    @media screen and (max-width: 768px) {
-      body {
-        padding: 0.6em;
-      }
+    body {
+      padding: 0.6em;
+    }
 
-      .app-title {
-        display: block;
-      }
+    .app-title {
+      display: block;
+    }
 
-      .note-actions {
-        opacity: 1;
-        visibility: visible;
-      }
+    .note-actions {
+      opacity: 1;
+      visibility: visible;
+    }
 
-      .hamburger {
-        display: flex !important;
-      }
+    .hamburger {
+      display: flex !important;
+    }
 
-      .nav-menu {
-        display: none;
-        flex-direction: column;
-        width: calc(100% - 2em);
-        position: absolute;
-        top: calc(100% + 0.5em);
-        left: 1em;
-        right: 1em;
-        background: var(--surface-color);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        border-radius: 0.5em;
-        padding: 1em;
-        z-index: 1000;
-        gap: 0.8em;
-      }
+    .nav-menu {
+      display: none;
+      flex-direction: column;
+      width: calc(100% - 2em);
+      position: absolute;
+      top: calc(100% + 0.5em);
+      left: 1em;
+      right: 1em;
+      background: var(--surface-color);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border-radius: 0.5em;
+      padding: 1em;
+      z-index: 1000;
+      gap: 0.8em;
+    }
 
-      .nav-menu.active {
-        display: flex !important;
-      }
+    .nav-menu.active {
+      display: flex !important;
+    }
 
-      .top-bar {
-        padding: 0.8em 1em;
-        position: relative;
-      }
+    .top-bar {
+      padding: 0.8em 1em;
+      position: relative;
+    }
 
-      .top-bar>svg {
-        width: 60px;
-        height: 60px;
-      }
+    .top-bar>svg {
+      width: 60px;
+      height: 60px;
+    }
 
-      .notes-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
+    .notes-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
 
-      .empty-state {
-        padding: 2rem 1rem;
-      }
+    .empty-state {
+      padding: 2rem 1rem;
+    }
 
-      .dashboard {
-        flex-direction: row;
-        gap: 0.5em;
-        margin-right: 0.5rem;
-        width: auto;
-        max-width: none;
-      }
+    .dashboard {
+      flex-direction: row;
+      gap: 0.5em;
+      margin-right: 0.5rem;
+      width: auto;
+      max-width: none;
+    }
 
-      .add-note-btn {
-        margin-left: 0;
-      }
+    .add-note-btn {
+      margin-left: 0;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+    }
 
-      .dashboard .stat {
-        margin: 0;
-      }
+    .add-note-btn span {
+      display: none;
+    }
+
+    .dashboard .stat {
+      margin: 0;
     }
 
     :root {
